@@ -14,11 +14,11 @@ public class PersonDAO {
 
     public PersonDAO() {
 
-        people.add(new Person(++PEOPLE_COUNT, "Tom"));
-        people.add(new Person(++PEOPLE_COUNT, "Mike"));
-        people.add(new Person(++PEOPLE_COUNT, "Katy"));
-        people.add(new Person(++PEOPLE_COUNT, "Mark"));
-        people.add(new Person(++PEOPLE_COUNT, "Amber"));
+        people.add(new Person(++PEOPLE_COUNT, "Tom", 20, "ytutdfg@hg"));
+        people.add(new Person(++PEOPLE_COUNT, "Mike", 30, "ghewrtetjg@bv"));
+        people.add(new Person(++PEOPLE_COUNT, "Katy", 22, "skjhkafdsdf@xc"));
+        people.add(new Person(++PEOPLE_COUNT, "Mark", 31, "bcsdfgvb@sd"));
+        people.add(new Person(++PEOPLE_COUNT, "Amber", 38, "qweertq@sd"));
 
     }
 
@@ -45,6 +45,8 @@ public class PersonDAO {
         Person personToBeUpdated = show(id);
 
         personToBeUpdated.setName(person.getName());
+        personToBeUpdated.setAge(person.getAge());
+        personToBeUpdated.setEmail(person.getEmail());
 
     }
 
