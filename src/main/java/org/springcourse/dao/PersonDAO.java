@@ -14,19 +14,29 @@ public class PersonDAO {
     private static final String USER = "postgres";
     private static final String PASSWORD = "root";
 
+    private static final Connection connection;
+
     static {
+
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+
+        try {
+            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public List<Person> index() {
 
         List<Person> people = new ArrayList<>();
 
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        try {
 
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM person");
@@ -42,8 +52,6 @@ public class PersonDAO {
 
             }
 
-            connection.close();
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -54,7 +62,7 @@ public class PersonDAO {
 
     public Person show(int id) {
 
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        try {
 
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM person WHERE id=?");
             statement.setInt(1, id);
@@ -82,14 +90,14 @@ public class PersonDAO {
 
     public void save(Person person) {
 
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        try {
 
             PreparedStatement statement = connection.prepareStatement("INSERT INTO person(name, age, email) VALUES(?, ?, ?)");
             statement.setString(1, person.getName());
             statement.setInt(2, person.getAge());
             statement.setString(3, person.getEmail());
 
-            statement.execute();
+            statement.executeUpdate();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -99,7 +107,7 @@ public class PersonDAO {
 
     public void update(int id, Person person) {
 
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        try {
 
             PreparedStatement statement = connection.prepareStatement("UPDATE person SET name=?, age=?, email=? WHERE id=?");
             statement.setString(1, person.getName());
@@ -117,7 +125,7 @@ public class PersonDAO {
 
     public void delete(int id) {
 
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        try {
 
             PreparedStatement statement = connection.prepareStatement("DELETE FROM person WHERE id=?");
             statement.setInt(1, id);
